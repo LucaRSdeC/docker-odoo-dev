@@ -1,5 +1,10 @@
+version: '3.8'
+
 services:
   web:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: odoodev:16
     container_name: o16
     depends_on:
@@ -8,12 +13,18 @@ services:
       - "8069:8069"
       - "8072:8072"
       - "8888:8888"
+      - "8765:8765"  # Expose WebSocket server port
     volumes:
       - ./conf:/etc/odoo
       - ./custom-addons:/mnt/custom-addons
       - o16-data:/var/lib/odoo
-      # - ./odoo:/usr/lib/python3/dist-packages/odoo # uncomment this if you want to mount odoo source code 
+      - ./odoo:/usr/lib/python3/dist-packages/odoo
+      - ./spicy_repository/source:/mnt/spicy_repository
+      - ./cinesmart/source:/mnt/enabled_cinesmart
+      - ./cinesmart/source/server-ux:/mnt/server-ux
+      - ./cinesmart/source/web:/mnt/web
     entrypoint: /usr/bin/python3 -m debugpy --listen 0.0.0.0:8888 /usr/bin/odoo -c /etc/odoo/odoo.conf -d odoo -i base
+
   mydb:
     image: postgres:16
     container_name: p16
@@ -21,9 +32,13 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      #- PGDATA=/var/lib/postgresql/data/pgdata
+      - PGDATA=/var/lib/postgresql/data/pgdata-sismup
     volumes:
-      - p16-data:/var/lib/postgresql/data/pgdata
+      #- p16-data:/var/lib/postgresql/data/pgdata
+      - p16-data-sismup:/var/lib/postgresql/data/pgdata-sismup
+
 volumes:
   o16-data:
-  p16-data:
+  #p16-data:
+  p16-data-sismup:

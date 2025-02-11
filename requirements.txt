@@ -1,2 +1,9 @@
 debugpy
 pydevd-odoo
+cryptography==41.0.3
+pyOpenSSL==23.2.0
+idna>=3.4
+urllib3>=1.26.15
+firebase-admin
+stomp.py
+websocket-client

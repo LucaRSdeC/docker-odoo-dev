@@ -1,0 +1,37 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Show Docker Logs",
+            "type": "shell",
+            "command": "docker logs -ft o16",
+            "problemMatcher": [],
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Restart Odoo Service with Logs",
+            "type": "shell",
+            "command": "docker exec o16 sh -c 'kill $(pgrep -f /usr/bin/odoo) || true && /usr/bin/odoo -c /etc/odoo/odoo.conf &' && docker logs -ft o16",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Restart Odoo + Logs + Update All",
+            "type": "shell",
+            "command": "docker exec o16 sh -c 'kill $(pgrep -f /usr/bin/odoo) || true && /usr/bin/odoo -c /etc/odoo/odoo.conf -d postgres -u all &' && docker logs -ft o16",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+        
+    ]
+}
